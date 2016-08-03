@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE_BACKDROP_URL = "movieBackdropUrl";
     public static final String EXTRA_MOVIE_RELEASE_DATE = "movieReleaseDate";
     public static final String EXTRA_MOVIE_RATING = "movieRating";
+
 
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -69,10 +71,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_option_sort:
                 break;
             case R.id.menu_option_search:
-                Intent toSearchIntent = new Intent();
-                toSearchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .setClass(this, SearchActivity.class);
-                startActivity(toSearchIntent);
+                if (getIntent().getBooleanExtra("can_search", true) != true) {
+                    Toast.makeText(this, "Search privileges revoked.", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent toSearchIntent = new Intent();
+                    toSearchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .setClass(this, SearchActivity.class);
+                    startActivity(toSearchIntent);
+                }
+
                 break;
 
             case R.id.sort_most_popular:
@@ -114,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initialise the default shared preferences.
-        // This is called only once
+        // This is called only once when the app is first installed
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
         // Get the current preferences
@@ -134,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
         // Use a grid layout manager, with 2 columns for now
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-
 
 
     }
@@ -369,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                 setTitle("Most Votes");
                 break;
             case "highest_revenue":
-                setTitle("Highest Revenue");
+                setTitle("Highest Grossing");
                 break;
         }
     }

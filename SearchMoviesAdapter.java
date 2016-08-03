@@ -69,7 +69,7 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<SearchMoviesAdapte
                 .into(holder.mPosterImageView);
 
         holder.mTitleTextView.setText(currentMovie.getTitle());
-        holder.mReleaseDateTextView.setText(currentMovie.getReleaseDate());
+        holder.mReleaseDateTextView.setText(UIUtils.formatDateString(currentMovie.getReleaseDate()));
 
         // Add an onClick listener to the item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +89,7 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<SearchMoviesAdapte
             }
         });
 
-    };
-
-
+    }
 
 
     // Need to have this...

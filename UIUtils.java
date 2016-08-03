@@ -1,5 +1,6 @@
 package com.aimtech.android.movies;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -9,6 +10,8 @@ import android.widget.ListView;
  * Created by Andy on 14/03/2016.
  */
 public class UIUtils {
+
+    private static final String lOG_TAG = UIUtils.class.getSimpleName();
 
     /**
      * Sets ListView height dynamically based on the height of the items.
@@ -46,6 +49,19 @@ public class UIUtils {
         } else {
             return false;
         }
+
+    }
+
+
+    public static String formatDateString(String rawDate) {
+
+        Log.d("UIUtils", "Raw date received : " + rawDate);
+        String[] splitString = rawDate.split("-");
+        String year = splitString[0].substring(2, 4);
+        String formattedDate = splitString[2].concat("/" + splitString[1]).concat("/" + year);
+        Log.d("UIUtils", "Formatted date : " + formattedDate);
+
+        return formattedDate;
 
     }
 }

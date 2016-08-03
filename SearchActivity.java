@@ -1,6 +1,7 @@
 package com.aimtech.android.movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private int mBlankSearchAttempts;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,7 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
 
         // Use a list layout manager
-        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
@@ -92,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (mQueryString.length() == 0) {
                     mBlankSearchAttempts = messagesForBlankSearches(mBlankSearchAttempts);
-                    Log.d(LOG_TAG,"Search Attempts Updated : " + mBlankSearchAttempts);
+                    Log.d(LOG_TAG, "Search Attempts Updated : " + mBlankSearchAttempts);
                     return;
                 }
                 FetchSearchMovieData fetchSearchMovieData = new FetchSearchMovieData();
@@ -103,9 +105,6 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 
     // AsyncTask Class
@@ -246,9 +245,9 @@ public class SearchActivity extends AppCompatActivity {
             SearchMoviesAdapter searchMoviesAdapter = new SearchMoviesAdapter(result, getBaseContext());
 
             // Update the UI
-            if(result.size() == 0){
-                Toast.makeText(getBaseContext(),"No Results Found",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getBaseContext(),"You Lose",Toast.LENGTH_LONG).show();
+            if (result.size() == 0) {
+                Toast.makeText(getBaseContext(), "No Results Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "You Lose", Toast.LENGTH_LONG).show();
             }
 
             mAdapter = searchMoviesAdapter;
@@ -288,13 +287,13 @@ public class SearchActivity extends AppCompatActivity {
         //Sort order from sharedPreferences
         String PARAM_SORT_VALUE = null;
 
-        Log.d(LOG_TAG,"Sort Order for URL : " + PARAM_SORT_VALUE);
+        Log.d(LOG_TAG, "Sort Order for URL : " + PARAM_SORT_VALUE);
 
         // Build URI
         destinationUri = Uri.parse(BASE_URI).buildUpon()
                 .appendPath(PATH_SEARCH)
                 .appendPath(PATH_MOVIES)
-                .appendQueryParameter(PARAM_QUERY,searchQuery)
+                .appendQueryParameter(PARAM_QUERY, searchQuery)
                 .appendQueryParameter(PARAM_LANGUAGE, "en")
                 .appendQueryParameter(PARAM_API, API_KEY_VALUE)
                 .build();
@@ -302,8 +301,8 @@ public class SearchActivity extends AppCompatActivity {
         return destinationUri.toString();
     }
 
-    private int messagesForBlankSearches(int tries){
-        switch (tries){
+    private int messagesForBlankSearches(int tries) {
+        switch (tries) {
             case 0:
                 Toast.makeText(getBaseContext(), "Please enter a title.", Toast.LENGTH_SHORT).show();
                 tries++;
@@ -313,7 +312,7 @@ public class SearchActivity extends AppCompatActivity {
                 tries++;
                 return tries;
             case 2:
-                Toast.makeText(getBaseContext(), "Look, I really can't search for nothing. It will get you nowhere.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Look, I can't search for nothing. It will get you nowhere.", Toast.LENGTH_LONG).show();
                 tries++;
                 return tries;
             case 3:
@@ -326,7 +325,7 @@ public class SearchActivity extends AppCompatActivity {
                 tries++;
                 return tries;
             case 5:
-                Toast.makeText(getBaseContext(), "Is this really amusing to you?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "This is amusing to you?", Toast.LENGTH_SHORT).show();
                 tries++;
                 return tries;
             case 6:
@@ -355,21 +354,45 @@ public class SearchActivity extends AppCompatActivity {
                 tries++;
                 return tries;
             case 13:
-                Toast.makeText(getBaseContext(), "Wow.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Wow.", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getBaseContext(), "You actually kept going.", Toast.LENGTH_LONG).show();
                 Toast.makeText(getBaseContext(), "Alright, this is getting sad. Be my guest.", Toast.LENGTH_LONG).show();
-                Toast.makeText(getBaseContext(), "You won't hear from me again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Later.", Toast.LENGTH_SHORT).show();
                 tries++;
                 return tries;
+            case 14:
+                Toast.makeText(getBaseContext(), "...", Toast.LENGTH_SHORT).show();
+                tries++;
+                return tries;
+            case 15:
+                tries++;
+                return tries;
+            case 16:
+                tries++;
+                return tries;
+            case 17:
+                Toast.makeText(getBaseContext(), "Right, I'm closing the screen next time.", Toast.LENGTH_SHORT).show();
+                tries++;
+                return tries;
+            case 18:
+                Toast.makeText(getBaseContext(), "Last chance.", Toast.LENGTH_SHORT).show();
+                tries++;
+                return tries;
+            case 19:
+                Intent toSearchIntent = new Intent();
+                toSearchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .setClass(this, MainActivity.class)
+                        .putExtra("can_search", false);
+                startActivity(toSearchIntent);
+
 
             default:
                 // Do nothing
                 break;
         }
 
-        return 14;
+        return 20;
     }
-
 
 
 }
